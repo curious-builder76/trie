@@ -31,6 +31,13 @@ trie_t* trie_new(){
 }
 
 int trie_init(trie_t* trie){
+	if(!trie) return 1;
+	uchar* node= (uchar*)trie;
+	printf("Hexdump:\n");
+	for(size_t idx=0;idx<sizeof(trie_t);idx++){
+		printf("%02x ",*node++);
+	}
+	printf("\n");
 	trie->capacity=64;
 	size_t mem_required=sizeof(trie_t)*trie->capacity;
 	trie_t* nodes=malloc(mem_required);
@@ -50,6 +57,7 @@ static int rearrange_nodes(trie_t* trie, uchar ch){
 	if(trie->min_seen > trie->max_seen){
 		trie->min_seen=ch;
 		trie->max_seen=ch;
+		printf("First insertion.\n");
 		return 0;
 	}
 	size_t used=trie->max_seen-trie->min_seen;
@@ -80,6 +88,11 @@ static int trie_insert0(trie_t* trie,uchar* string){
 
 	int initalized= trie->stored_chars[byte_index] & (1llu<< bit_index);
 	trie_t* child=trie->nodes + (ch-trie->min_seen);
+	printf("Index: %d Cap: %d\n",ch-trie->min_seen, trie->capacity);
+	if(ch-trie->min_seen < 0 ){
+		printf("Critical: The index was found to be -ve.\n");
+		return 127;
+	}
 	if(!initalized && trie_init(child)!=0){
 		return 1;
 	}
