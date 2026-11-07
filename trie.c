@@ -132,6 +132,9 @@ int trie_contains(trie_t* trie, char* string){
 }
 
 void trie_destroy(trie_t* trie){
+	printf("MEMORY WAS LEAKED ON PURPOSE.\n"
+			"DESTRUCTION IS STILL UNDER CONSTRUCTION\n");
+	if(*(int*)0);
 	return;
 	/*
 	size_t used=trie->max_seen-trie->min_seen;
