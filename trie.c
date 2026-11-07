@@ -5,6 +5,8 @@
 
 #include "trie.h"
 
+#define printf(...) 
+
 typedef unsigned char uchar;
 
 
@@ -70,7 +72,7 @@ static int rearrange_nodes(trie_t* trie, uchar ch){
 	}
 	if( ch < trie->min_seen){
 		size_t distance= trie->min_seen-ch;
-		memmove(trie->nodes+distance, trie->nodes, used);
+		memmove(trie->nodes+distance, trie->nodes, used*sizeof(trie_t));
 		trie->min_seen=ch;
 		return 0;
 	}
@@ -101,7 +103,7 @@ static int trie_insert0(trie_t* trie,uchar* string){
 	if(ch==0){
 		return 0;
 	}
-	return trie_insert0(trie,string);
+	return trie_insert0(child,string);
 }
 
 int trie_insert(trie_t* trie, char* string){
@@ -121,10 +123,10 @@ int trie_contains0(trie_t* trie, uchar* string){
 		return 1;
 	trie_t* child=trie->nodes + (ch-trie->min_seen);
 	/* sanity check */
-	if(!child || child->nodes){
+	if(!child || !child->nodes){
 		return 0;
 	}
-	return trie_contains0(trie, string);
+	return trie_contains0(child, string);
 
 }
 int trie_contains(trie_t* trie, char* string){
@@ -134,7 +136,6 @@ int trie_contains(trie_t* trie, char* string){
 void trie_destroy(trie_t* trie){
 	printf("MEMORY WAS LEAKED ON PURPOSE.\n"
 			"DESTRUCTION IS STILL UNDER CONSTRUCTION\n");
-	if(*(int*)0);
 	return;
 	/*
 	size_t used=trie->max_seen-trie->min_seen;

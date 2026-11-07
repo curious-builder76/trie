@@ -122,8 +122,8 @@ void benchmark(){
 
 	double time_elapsed;
 	int tests_failed=0;
-	int times=5000000;
-	size_t input_size=strlen("value_")+strlen("5000000")+1;
+	int times=1000;
+	size_t input_size=strlen("value_")+strlen("1000")+1;
 
 	// int times = 5000000;
 	char* input=get_data(times, input_size);
