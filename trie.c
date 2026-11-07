@@ -43,6 +43,7 @@ int trie_init(trie_t* trie){
 }
 
 static int rearrange_nodes(trie_t* trie, uchar ch){
+	printf("%c\n",ch);
 	if(ch < trie->max_seen || ch > trie->min_seen ){
 		return 0; /* Already sorted */
 	}
