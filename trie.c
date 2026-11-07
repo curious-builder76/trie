@@ -44,9 +44,29 @@ int trie_init(trie_t* trie){
 
 static int rearrange_nodes(trie_t* trie, uchar ch){
 	printf("%c\n",ch);
-	if(ch < trie->max_seen || ch > trie->min_seen ){
+	if(ch < trie->max_seen || ch >= trie->min_seen ){
 		return 0; /* Already sorted */
 	}
+	if(trie->min_seen > trie->max_seen){
+		trie->min_seen=ch;
+		trie->max_seen=ch;
+		return 0;
+	}
+	size_t used=trie->max_seen-trie->min_seen;
+	/* Fail to grow intentionaly*/
+	if(used>=trie->capacity)
+		return 1;
+	if(ch > trie->max_seen){
+		trie->max_seen=ch;
+		return 0;
+	}
+	if( ch < trie->min_seen){
+		size_t distance= trie->min_seen-ch;
+		memmove(trie->nodes+distance, trie->nodes, used);
+		trie->min_seen=ch;
+		return 0;
+	}
+	printf("Here");
 	return 1;
 }
 
@@ -63,7 +83,7 @@ static int trie_insert0(trie_t* trie,uchar* string){
 	if(!initalized && trie_init(child)!=0){
 		return 1;
 	}
-	trie->stored_chars[byte_index] |= (1<<bit_index);
+	trie->stored_chars[byte_index] |= (1llu<<bit_index);
 
 	if(ch==0){
 		return 0;
