@@ -38,21 +38,16 @@ trie_t* trie_new(){
 }
 
 int trie_insert(trie_t* trie,char* string){
+	if(trie->nodes==NULL && trie_init(trie)!=0){
+		return 1;
+	}
 	uchar ch=*(uchar*)(string++);
-	
 	if(ch==0){
 		trie->seen_null=1;
 		return 0;
 	}
 	node_t* child=trie->nodes+ch;
-	printf("char: %c\n",ch);
-	if(child==NULL){
-		printf("NULL child\n");
-	}
-	if(child->nodes==NULL)
-		if(trie_init(child)!=0){
-		return 1;
-	}
+
 	return trie_insert(child,string);
 }
 
@@ -69,11 +64,16 @@ int trie_contains(trie_t* trie,char* string){
 	return trie_contains(child,string);
 }
 
-void trie_destroy(trie_t* trie){
+void trie_destroy0(trie_t* trie){
 	if(!trie || !trie->nodes)
 		return;
 	for(size_t idx=0;idx<MAX_NODES;idx++){
-		trie_destroy(trie->nodes+idx);
+		trie_destroy0(trie->nodes+idx);
 	}
+	free(trie->nodes);
 }
 
+void trie_destroy(trie_t* trie){
+	trie_destroy0(trie);
+	free(trie);
+}
