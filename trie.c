@@ -9,11 +9,12 @@ typedef unsigned char uchar;
 
 #define MAX_NODES 255
 
+#pragma pack(push, 1)
 typedef struct __node{
-	int seen_null;
+	char seen_null;
 	struct __node* nodes;
 }trie_t;
-
+#pragma pack(pop)
 typedef trie_t node_t;
 
 
@@ -48,7 +49,7 @@ int trie_insert(trie_t* trie,char* string){
 			trie->seen_null=1;
 			return 0;
 		}
-		trie=trie->nodes+ch;
+		trie=trie->nodes+(ch-1);
 	}
 }
 
@@ -60,7 +61,7 @@ int trie_contains(trie_t* trie,char* string){
 		if(ch==0 && trie->seen_null){
 			return 1;
 		}
-		trie=trie->nodes+ch;
+		trie=trie->nodes+(ch-1);
 		if(trie->nodes==NULL){
 			return 0;
 		}
