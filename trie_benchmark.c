@@ -95,7 +95,7 @@ int random_lookups(trie_t* trie,char* input, size_t input_size, size_t times, do
 		hits++;
 	}
 	clock_t end=clock();
-	*time_elapsed= (end-start)/CLOCKS_PER_SEC;
+	*time_elapsed=(double) (end-start)/CLOCKS_PER_SEC;
 	printf("Hits: %zu\n",hits);
 	return 0;
 }
