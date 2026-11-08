@@ -61,10 +61,11 @@ int trie_contains(trie_t* trie,char* string){
 		if(ch==0 && trie->seen_null){
 			return 1;
 		}
-		trie=trie->nodes+(ch-1);
 		if(trie->nodes==NULL){
 			return 0;
 		}
+
+		trie=trie->nodes+(ch-1);
 	}
 }
 
