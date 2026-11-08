@@ -1,4 +1,7 @@
 
 build:
-	gcc -O2 -Wall -Wextra -fsanitize=undefined,address *.c 
-	
+	gcc -Wall -Wextra -fsanitize=undefined,address *.c 
+
+debug:
+	gcc -Wall -Wextra -ggdb *.c
+
