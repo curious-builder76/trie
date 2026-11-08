@@ -84,7 +84,6 @@ int random_lookups(trie_t* trie,char* input, size_t input_size, size_t times, do
 		debug("NULL trie found");
 		return 1;
 	}
-	volatile size_t hits=0;
 	clock_t start=clock();
 	for(size_t i=0;i<times;i++){
 		char* ptr=input + input_size*i;
@@ -92,11 +91,9 @@ int random_lookups(trie_t* trie,char* input, size_t input_size, size_t times, do
 			debug("Failed after %zu operations",i);
 			return 1;
 		}
-		hits++;
 	}
 	clock_t end=clock();
 	*time_elapsed=(double) (end-start)/CLOCKS_PER_SEC;
-	printf("Hits: %zu\n",hits);
 	return 0;
 }
 
