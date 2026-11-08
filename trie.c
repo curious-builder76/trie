@@ -38,30 +38,33 @@ trie_t* trie_new(){
 }
 
 int trie_insert(trie_t* trie,char* string){
-	if(trie->nodes==NULL && trie_init(trie)!=0){
-		return 1;
+	uchar* data= (uchar*)string;
+	while(1){
+		if(trie->nodes==NULL && trie_init(trie)!=0){
+			return 1;
+		}
+		uchar ch=*data++;
+		if(ch==0){
+			trie->seen_null=1;
+			return 0;
+		}
+		trie=trie->nodes+ch;
 	}
-	uchar ch=*(uchar*)(string++);
-	if(ch==0){
-		trie->seen_null=1;
-		return 0;
-	}
-	node_t* child=trie->nodes+ch;
-
-	return trie_insert(child,string);
 }
 
 int trie_contains(trie_t* trie,char* string){
-	uchar ch=*(uchar*)(string++);
-	
-	if(ch==0 && trie->seen_null){
-		return 1;
+	uchar* data= (uchar*)string;
+	while(1){
+		uchar ch=*data++;
+
+		if(ch==0 && trie->seen_null){
+			return 1;
+		}
+		trie=trie->nodes+ch;
+		if(trie->nodes==NULL){
+			return 0;
+		}
 	}
-	node_t* child=trie->nodes+ch;
-	if(child->nodes==NULL){
-		return 0;
-	}
-	return trie_contains(child,string);
 }
 
 void trie_destroy0(trie_t* trie){
