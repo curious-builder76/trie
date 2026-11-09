@@ -1,0 +1,33 @@
+==== benchmark of trie.====
+INSERT: apple
+INSERT: aplication
+INSERT: armour
+INSERT: banana
+CONTAINS: apple  -->  true
+Nonexistent entry test
+CONTAINS: panda  -->  false
+Existent entry test.
+CONTAINS: apple  -->  true
+Random inserts.
+Test passed
+INSERT (random)
+  Time: 1.125370 seconds
+  Operations: 5000000
+  Rate: 4.4430 M ops/sec
+
+Sequential inserts.
+Test passed
+INSERT (sequential)
+  Time: 0.206858 seconds
+  Operations: 5000000
+  Rate: 24.1712 M ops/sec
+
+Random lookups.
+Test passed.
+CONTAINS (random)
+  Time: 1.491973 seconds
+  Operations: 5000000
+  Rate: 3.3513 M ops/sec
+
+All tests passed.
+No memory leaks. 
