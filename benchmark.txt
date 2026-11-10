@@ -11,23 +11,23 @@ CONTAINS: apple  -->  true
 Random inserts.
 Test passed
 INSERT (random)
-  Time: 1.674281 seconds
+  Time: 1.080865 seconds
   Operations: 5000000
-  Rate: 2.986357 M ops/sec
+  Rate: 4.625925 M ops/sec
 
 Sequential inserts.
 Test passed
 INSERT (sequential)
-  Time: 1.132589 seconds
+  Time: 0.256107 seconds
   Operations: 5000000
-  Rate: 4.414664 M ops/sec
+  Rate: 19.523090 M ops/sec
 
 Random lookups.
 Test passed.
 CONTAINS (random)
-  Time: 0.280244 seconds
+  Time: 0.264568 seconds
   Operations: 5000000
-  Rate: 17.841595 M ops/sec
+  Rate: 18.898733 M ops/sec
 
 All tests passed.
 No memory leaks.
