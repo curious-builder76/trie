@@ -1,13 +1,11 @@
 
-# WARNING: UNDER DEVLOPMENT, DO NOT USE IT,
-# THIS FILE IS PART OF BIGGER PROJECT AND THIS
-# REPOSITORY IS A TEMPORARY ONE, 
-# FOR THE ORIGNAL REPO SEE [HERE](https://github.com/curious-builder76/dtypes "A data structure library written in pure C") 
 # trie
 
-- An experimental and unconventional trie structure.
+This piece of code was archived on 10 November 2026 at 10:50 AM of IST
+The purpose of this repository was completed. and hence merged with the orignial project
+See the main project  [here](https://github.com/curious-builder76/dtypes "A data structure library written in pure C") 
 
-## Under development. Need contribution ..
+## have you ever seen a trie this fast ??
 
 ## For building on Linux
 
