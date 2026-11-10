@@ -7,13 +7,14 @@
 
 #define MAX_NODES 255
 
-
+#pragma pack(push, 1)
 typedef struct __trie{
-	uint16_t seen_null;
-	uint16_t capacity;
+	uint8_t seen_null;
+	uint8_t capacity;
 	struct __trie* nodes;
 }trie_t;
 
+#pragma pack(pop)
 typedef unsigned char uchar;
 
 typedef trie_t node_t;
@@ -81,7 +82,7 @@ int trie_contains(trie_t* trie,char* input){
 		if(ch==0){
 			return trie->seen_null;
 		}
-		if( ch > trie->capacity){
+		if( ch >= trie->capacity){
 			return 0;
 		}
 		trie= trie->nodes + (ch-1);
