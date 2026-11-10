@@ -1,84 +1,103 @@
 #include<stdio.h>
 #include<stdlib.h>
-#include<stdint.h>
 #include<string.h>
-
-
-typedef unsigned char uchar;
-
+#include<stdint.h>
 
 #define MAX_NODES 255
 
-#pragma pack(push, 1)
-typedef struct __node{
-	char seen_null;
-	struct __node* nodes;
+typedef struct __trie{
+	int16_t seen_null;
+	uint16_t capacity;
+	struct __trie* nodes;
 }trie_t;
-#pragma pack(pop)
+
+typedef unsigned char uchar;
+
 typedef trie_t node_t;
 
+trie_t* trie_new(){
+	trie_t* root;
+	if((root=malloc(sizeof(trie_t)))==NULL)
+		return root;
+	memset(root,0,sizeof *root);
+	return root;
+}
 
-int trie_init(trie_t* trie){
-	size_t mem_required=sizeof(node_t)*MAX_NODES;
-	node_t* nodes=malloc(mem_required);
+int trie_grow(trie_t* trie, uchar ch){
+	if(trie->capacity >=MAX_NODES){
+		/* At maximum capacity*/
+		return 0;
+	}
+	uint16_t cap= trie->capacity ? trie->capacity : 8;
+
+	while(cap < ch){
+		cap*=2;
+	}
+	if(cap>=MAX_NODES)
+		cap=MAX_NODES;
+	size_t mem_required=sizeof(node_t)*cap;
+
+	node_t* nodes;
+	if(trie->nodes==NULL){
+		nodes=malloc(mem_required);
+	}else{
+		nodes=realloc(trie->nodes,mem_required);
+	}
 	if(!nodes){
 		return 1;
 	}
-	memset(nodes, 0, mem_required);
+
+	memset(nodes+ trie->capacity, 0, (cap-trie->capacity)*sizeof(node_t));
 	trie->nodes=nodes;
+	trie->capacity=cap;
 	return 0;
 }
 
-trie_t* trie_new(){
-	trie_t* trie=malloc(sizeof(trie_t));
-	if(!trie){
-		return NULL;
-	}
-	memset(trie, 0, sizeof(trie_t));
-	return trie;
-}
+int trie_insert(trie_t* trie, char* input){
+	uchar* data= (uchar*)input;
 
-int trie_insert(trie_t* trie,char* string){
-	uchar* data= (uchar*)string;
 	while(1){
-		if(trie->nodes==NULL && trie_init(trie)!=0){
-			return 1;
-		}
 		uchar ch=*data++;
 		if(ch==0){
 			trie->seen_null=1;
 			return 0;
 		}
-		trie=trie->nodes+(ch-1);
+		
+		if(trie_grow(trie,ch)!=0){
+			return 1;
+		}
+		trie= trie->nodes+ (ch-1);
 	}
 }
 
-int trie_contains(trie_t* trie,char* string){
-	uchar* data= (uchar*)string;
+int trie_contains(trie_t* trie,char* input){
+	uchar* data=(uchar*)input;
+
 	while(1){
 		uchar ch=*data++;
-
-		if(ch==0 && trie->seen_null){
-			return 1;
+		if(ch==0){
+			return (int)trie->seen_null;
 		}
-		if(trie->nodes==NULL){
+		if( ch > trie->capacity){
 			return 0;
 		}
-
-		trie=trie->nodes+(ch-1);
+		trie= trie->nodes + (ch-1);
 	}
 }
 
 void trie_destroy0(trie_t* trie){
-	if(!trie || !trie->nodes)
+	if(!trie || !trie->nodes){
 		return;
-	for(size_t idx=0;idx<MAX_NODES;idx++){
-		trie_destroy0(trie->nodes+idx);
+	}
+
+	for(uint16_t idx=0;idx<trie->capacity;idx++){
+		trie_t* child=trie->nodes+idx;
+		trie_destroy0(child);
 	}
 	free(trie->nodes);
 }
-
 void trie_destroy(trie_t* trie){
 	trie_destroy0(trie);
 	free(trie);
 }
+
