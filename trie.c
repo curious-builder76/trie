@@ -7,14 +7,12 @@
 
 #define MAX_NODES 255
 
-#pragma pack(push, 1)
 typedef struct __trie{
 	uint8_t seen_null;
 	uint8_t capacity;
 	struct __trie* nodes;
 }trie_t;
 
-#pragma pack(pop)
 typedef unsigned char uchar;
 
 typedef trie_t node_t;
