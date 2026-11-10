@@ -3,10 +3,13 @@
 #include<string.h>
 #include<stdint.h>
 
+#include "trie.h"
+
 #define MAX_NODES 255
 
+
 typedef struct __trie{
-	int16_t seen_null;
+	uint16_t seen_null;
 	uint16_t capacity;
 	struct __trie* nodes;
 }trie_t;
@@ -23,7 +26,7 @@ trie_t* trie_new(){
 	return root;
 }
 
-int trie_grow(trie_t* trie, uchar ch){
+static inline int trie_grow(trie_t* trie, uchar ch){
 	if(trie->capacity >=MAX_NODES){
 		/* At maximum capacity*/
 		return 0;
@@ -76,7 +79,7 @@ int trie_contains(trie_t* trie,char* input){
 	while(1){
 		uchar ch=*data++;
 		if(ch==0){
-			return (int)trie->seen_null;
+			return trie->seen_null;
 		}
 		if( ch > trie->capacity){
 			return 0;
